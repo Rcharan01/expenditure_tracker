@@ -198,6 +198,12 @@ module.exports = async (req, res) => {
   const useKV = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
   const useMongo = !!(process.env.MONGODB_URI || process.env.STORAGE_URL || process.env.MONGODB_URL);
 
+  const isOnVercel = !!process.env.VERCEL;
+  if (isOnVercel && !useMongo && !useKV) {
+    log('ERROR', 'database_config_missing');
+    return res.status(500).json({ error: 'Critical Configuration Error: MONGODB_URI environment variable is missing on Vercel. Please link your MongoDB database.' });
+  }
+
   // ── GET: Load State ──────────────────────────────────────────────────────
   if (req.method === 'GET') {
     log('INFO', 'load_start', { username });

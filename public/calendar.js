@@ -129,7 +129,7 @@ function renderCalendar(){
         <thead><tr><th>Name</th><th>Date</th><th>Day</th><th>Amount</th><th></th></tr></thead>
         <tbody>
         ${items.map(item=>{
-          const dt=new Date(item.date+'T00:00:00');
+          const dt=parseLocalDate(item.date);
           const dateStr=dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});
           const dayStr=dt.toLocaleDateString('en-IN',{weekday:'short'});
           return `
